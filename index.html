@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>今日と明日の天気チェッカー</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <main class="container">
+        <h1>今日と明日の天気</h1>
+
+        <!-- 地点選択（選択肢はjs側で作る） -->
+        <div class="location-row">
+            <label for="location-select">地域</label>
+            <select id="location-select"></select>
+        </div>
+
+        <!-- 読み込み中 -->
+        <div id="loading">
+            <div class="spinner"></div>
+            <p>天気データを読み込み中…</p>
+        </div>
+
+        <!-- エラー表示 -->
+        <div id="error" hidden>
+            <p>天気データを取得できませんでした。通信状況を確認して、もう一度お試しください。</p>
+            <button id="retry-button">もう一度試す</button>
+        </div>
+
+        <!-- 天気表示エリア -->
+        <div id="weather" hidden>
+            <!-- 現在の天気 -->
+            <section class="card">
+                <h2>現在</h2>
+                <div class="current-info">
+                    <p class="weather-line">
+                        <span id="current-icon" class="weather-icon"></span>
+                        <span id="current-label"></span>
+                    </p>
+                    <strong class="temp-current"><span id="current-temp"></span>℃</strong>
+                </div>
+            </section>
+
+            <!-- 今日の天気 -->
+            <section class="card">
+                <h2>今日</h2>
+                <p class="weather-line">
+                    <span id="today-icon" class="weather-icon"></span>
+                    <span id="today-label"></span>
+                </p>
+                <div class="values">
+                    <div>
+                        <span class="caption">最高気温</span>
+                        <strong class="temp-max"><span id="today-max"></span>℃</strong>
+                    </div>
+                    <div>
+                        <span class="caption">最低気温</span>
+                        <strong class="temp-min"><span id="today-min"></span>℃</strong>
+                    </div>
+                    <div>
+                        <span class="caption">降水確率</span>
+                        <strong class="rain-prob"><span id="today-rain-prob"></span>%</strong>
+                    </div>
+                </div>
+                <p id="today-umbrella" class="umbrella"></p>
+            </section>
+
+            <!-- 明日の天気 -->
+            <section class="card">
+                <h2>明日</h2>
+                <p class="weather-line">
+                    <span id="tomorrow-icon" class="weather-icon"></span>
+                    <span id="tomorrow-label"></span>
+                </p>
+                <div class="values">
+                    <div>
+                        <span class="caption">最高気温</span>
+                        <strong class="temp-max"><span id="tomorrow-max"></span>℃</strong>
+                    </div>
+                    <div>
+                        <span class="caption">最低気温</span>
+                        <strong class="temp-min"><span id="tomorrow-min"></span>℃</strong>
+                    </div>
+                    <div>
+                        <span class="caption">降水確率</span>
+                        <strong class="rain-prob"><span id="tomorrow-rain-prob"></span>%</strong>
+                    </div>
+                </div>
+                <p id="tomorrow-umbrella" class="umbrella"></p>
+            </section>
+        </div>
+    </main>
+
+    <!-- 出典リンク -->
+    <footer>
+        <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Weather data by Open-Meteo.com</a>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+
+</html>
