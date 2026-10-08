@@ -30,6 +30,9 @@ const errorArea = document.getElementById('error');
 const weatherArea = document.getElementById('weather');
 const retryButton = document.getElementById('retry-button');
 
+/** 最新の天気取得リクエストを識別するための番号 */
+let latestRequestId = 0;
+
 /**
  * 画面の天気データ表示エリアの状態を切り替える。
  * @param {'loading' | 'error' | 'weather'} state 表示エリアの状態
@@ -128,12 +131,21 @@ function renderWeather(data) {
  */
 async function loadWeather() {
     const place = LOCATIONS[locationSelect.value];
+    const requestId = ++latestRequestId;
     showState('loading');
     try {
         const data = await fetchWeather(place);
+        // 天気の取得中に新しい読み込みが始まっていたら、古い取得結果は捨てる
+        if (requestId !== latestRequestId) {
+            return;
+        }
         renderWeather(data);
         showState('weather');
     } catch (error) {
+        // 古い読み込みの失敗も画面には出さない
+        if (requestId !== latestRequestId) {
+            return;
+        }
         console.error(error);
         showState('error');
     }
