@@ -73,7 +73,7 @@ function getUmbrellaMessage(probability) {
 
 /**
  * 地点情報を受け取り、天気データ（JSON）を取得して返す。
- * 通信に失敗したときや、サーバーがエラーを返したときは例外を投げる。
+ * 通信に失敗したとき、サーバーがエラーを返したとき、時間切れになったときは例外を投げる。
  * @param {{latitude: number, longitude: number}} place 地点情報（緯度・経度）
  * @returns {Promise<Object>} 天気データ
  */
@@ -84,7 +84,10 @@ async function fetchWeather(place) {
         '&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max' +
         '&timezone=Asia%2FTokyo&forecast_days=2';
 
-    const response = await fetch(url);
+    // 10秒応答がなければ通信を中止する
+    const response = await fetch(url, {
+        signal: AbortSignal.timeout(10000),
+    });
     if (!response.ok) {
         throw new Error(`HTTP ${response.status}`);
     }
